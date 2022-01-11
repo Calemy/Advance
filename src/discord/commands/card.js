@@ -5,6 +5,8 @@ module.exports = {
         const Discord = require('discord.js')
         const database = require('../../helper/dbHelper.js')
         const image = require('../../helper/imageHelper.js')
+        const calculator = require('../../helper/calcHelper.js')
+        const fetch = require('node-fetch')
 
         if(!args[0]) return message.channel.send("Please provide a user!")
         const input = args[0];
@@ -24,11 +26,14 @@ module.exports = {
                 database.request(`SELECT pp FROM scores WHERE user = '${user.userid}' AND mode = '${mode}' AND time > '1640991600' ORDER BY pp DESC LIMIT 5`)
         ]);
 
+
+        if(scores.length < 5) return message.channel.send("Sorry, but this user has not played enough ranked maps to get a wrapped!")
+
         const favsongs = [];
         
         let pos = 0;
 
-        while(pos < most.legnth){
+        while(pos < most.length){
             const mbmrq = await fetch(`https://kitsu.moe/api/meta?b=${most[pos].beatmap}`)
             const mbeatmap = await mbmrq.json()
             favsongs.push(mbeatmap.title)
@@ -47,13 +52,13 @@ module.exports = {
                 best[3].pp,
                 best[4].pp
             ],
-            mod: favmod,
+            mod: favmod.short,
             songs: favsongs
         }
 
         await image.wrapped(data)
 
-        const file = new Discord.MessageAttachment(`/var/www/html/beta/${stats.id}.png`);
+        const file = new Discord.MessageAttachment(`/var/www/html/beta/${user.userid}.png`);
         message.channel.send(`${user.username}'s osu!wrapped`, file);
 
     }
