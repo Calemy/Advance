@@ -1,0 +1,21 @@
+{
+  "name": "advancejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "advance.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.8.0",
+    "discord.js": "^12.5.3",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.0",
+    "node-fetch": "^2.6.6",
+    "recursive-readdir": "^2.2.2"
+  }
+}
