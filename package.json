@@ -12,6 +12,7 @@
   "dependencies": {
     "canvas": "^2.8.0",
     "discord.js": "^12.5.3",
+    "express": "^4.17.2",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "node-cron": "^3.0.0",
