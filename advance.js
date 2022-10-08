@@ -1,14 +1,14 @@
-const bot = require('./src/discord/bot.js');
-const cron = require('./src/cron.js');
-const database = require('./src/helper/dbHelper.js');
+import Logger from "cutesy.js"
+import api from "./api/index.js"
+import cron from "./cron/index.js"
+import { connect } from "./helper/database.js"
 
-const express = require('express')
-const app = express()
-const port = 9000
+const logger = new Logger().addTimestamp("hh:mm:ss").changeTag("Main").purpleBlue()
 
-app.listen(port)
+logger.send("Starting Advance Version Alpha-3.1.0")
 
-console.log("Starting osu!advance - Version 1.0 (Beta)")
-database.connect()
-bot();
-cron();
+await connect()
+
+await api()
+
+cron()
