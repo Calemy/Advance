@@ -60,9 +60,13 @@ export async function scores(id){
     logger.send(`Fetching scores for ID: ${id}`)
     for(let type of ["best", "recent"]){
         for(let mode of ["osu", "taiko", "fruits", "mania"]){
-            const scores = await get(`https://osu.ppy.sh/api/v2/users/${id}/scores/${type}?mode=${mode}&include_fails=1&limit=1000`)
+            const scores = await get(`https://osu.ppy.sh/api/v2/users/${id}/scores/${type}?mode=${mode}&include_fails=1`)
 
             for(var i = 0; i < scores.length; i++){
+                const check = await requestOne(`SELECT * FROM scores WHERE scoreid = ${scores[i].id} AND mode = ${scores[i].mode_int} AND time = ${Math.floor(new Date(scores[i].created_at).getTime() / 1000)}`)
+
+                if(check) continue;
+
                 const score = await format(scores[i])
                 const keys = Object.keys(score)
                 const values = []
@@ -71,10 +75,6 @@ export async function scores(id){
                     values[j] = score[keys[j]]
                 }
     
-                const check = await requestOne(`SELECT * FROM scores WHERE scoreid = ${score.scoreid} AND mode = ${score.mode} AND time = ${score.time}`)
-                
-                if(check) continue;
-
                 await insert("scores", keys , values)
             }
         }
